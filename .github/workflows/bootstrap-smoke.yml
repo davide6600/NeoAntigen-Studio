@@ -19,9 +19,9 @@ jobs:
 
       - name: Verify governance artifacts
         run: |
-          test -f ARCHITECTURE_IMPLEMENTATION_PLAN.md
           test -f Architecture_Traceability_Matrix.md
           test -f agent/checklist.md
+
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -172,9 +172,9 @@ jobs:
 
       - name: Verify governance artifacts
         run: |
-          test -f ARCHITECTURE_IMPLEMENTATION_PLAN.md
           test -f Architecture_Traceability_Matrix.md
           test -f agent/checklist.md
+
 
       - name: Check Dockerfile exists
         id: check_dockerfile

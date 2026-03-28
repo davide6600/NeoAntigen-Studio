@@ -53,7 +53,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release notes.
 Per garantire l'accuratezza delle predizioni biologiche e il corretto funzionamento di tutti i backend di predizione, si prega di prestare attenzione ai seguenti requisiti:
 
 *   **MHCflurry 2.0:** Per ottenere predizioni biologiche reali con MHCflurry 2.0 è **obbligatorio** utilizzare Python **3.10, 3.11 o 3.12**.
-*   **Compatibilità Python 3.13:** Su Python 3.13, MHCflurry 2.0 non è attualmente supportato. In questo ambiente, il sistema eseguirà automaticamente un **fallback su un modello dummy `sklearn`** (non biologico), utile solo per scopi di test e sviluppo dell'infrastruttura.
+*   **Compatibilità Python 3.13:** Su Python 3.13, MHCflurry 2.0 non è attualmente supportato. In questo ambiente, il sistema eseguirà automaticamente un **fallback su un modello `sklearn`** (non biologico), utile solo per scopi di test e sviluppo dell'infrastruttura.
 *   **Tool Esterni (NetMHCstabpan & PRIME 2.0):** Il calcolo della stabilità peptide-MHC e del riconoscimento TCR richiede l'installazione manuale dei binari proprietari. Vedere la sezione [Predictor Modules](#predictor-modules) per i dettagli.
 
 <hr />
