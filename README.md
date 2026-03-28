@@ -15,12 +15,12 @@ See [CHANGELOG.md](CHANGELOG.md) for full release notes.
 
 ## Table of Contents
 - [Important Notice (RUO)](#️-important-notice-research-use-only-ruo)
-- [System Requirements Notice](#-avviso-importante-sui-requisiti-di-sistema)
-- [Quickstart / Automazione](#-quickstart--automazione)
+- [System Requirements Notice](#-important-notice-on-system-requirements)
+- [Quickstart / Automation](#-quickstart--automation)
 - [Privacy & Security](#-privacy--security-first-local-execution)
 - [Overview](#-overview)
 - [System Requirements](#-system-requirements)
-- [Quick Start](#-quick-start)
+- [Quick Start](#-quickstart--automation)
 - [Prediction Backends](#prediction-backends)
 - [HLA Typing](#hla-typing)
 - [HPC / Nextflow](#hpc--nextflow-usage)
@@ -48,13 +48,13 @@ See [CHANGELOG.md](CHANGELOG.md) for full release notes.
 
 <hr />
 
-## 🚨 Avviso Importante sui Requisiti di Sistema
+## 🚨 Important Notice on System Requirements
 
-Per garantire l'accuratezza delle predizioni biologiche e il corretto funzionamento di tutti i backend di predizione, si prega di prestare attenzione ai seguenti requisiti:
+To ensure biological prediction accuracy and proper functioning of all prediction backends, please note the following requirements:
 
-*   **MHCflurry 2.0:** Per ottenere predizioni biologiche reali con MHCflurry 2.0 è **obbligatorio** utilizzare Python **3.10, 3.11 o 3.12**.
-*   **Compatibilità Python 3.13:** Su Python 3.13, MHCflurry 2.0 non è attualmente supportato. In questo ambiente, il sistema eseguirà automaticamente un **fallback su un modello `sklearn`** (non biologico), utile solo per scopi di test e sviluppo dell'infrastruttura.
-*   **Tool Esterni (NetMHCstabpan & PRIME 2.0):** Il calcolo della stabilità peptide-MHC e del riconoscimento TCR richiede l'installazione manuale dei binari proprietari. Vedere la sezione [Predictor Modules](#predictor-modules) per i dettagli.
+*   **MHCflurry 2.0:** Python **3.10, 3.11, or 3.12** is **mandatory** for real biological predictions using MHCflurry 2.0.
+*   **Python 3.13 Compatibility:** MHCflurry 2.0 is currently not supported on Python 3.13. In this environment, the system will automatically **fallback to a dummy `sklearn` model**, which is useful only for testing and infrastructure development.
+*   **External Tools (NetMHCstabpan & PRIME 2.0):** Calculating peptide-MHC stability and TCR recognition potential requires manual installation of proprietary binaries. See the [Predictor Modules](#predictor-modules) section for details.
 
 <hr />
 
@@ -174,67 +174,14 @@ Prerequisites: Docker Desktop or Docker Engine + Compose Plugin
 
 ### Option 2: CLI (Local)
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-docker-compose up -d redis postgres
-
-python scripts/run_pipeline_cli.py \
-  --patient-id P001 \
-  --hla-alleles "HLA-A*02:01" \
-  --peptides "SIINFEKL" \
-  --run-mode dry_run
-```
-
-### Option 3: HPC / Nextflow
-Ideal for Linux clusters (e.g., SLURM) where Conda or Bioconda environments are preferred.
-```bash
-nextflow run workflows/neoantigen.nf \
-  --input_vcf sample.vcf \
-  --hla_types "HLA-A*02:01,HLA-B*07:02" \
-  --outdir ./results \
-  -profile slurm
-```
-<hr />
-
-## 🚀 Quickstart / Automazione
-
-NeoAntigen-Studio supporta l'avvio automatizzato tramite **Docker Compose** e un **Makefile** dedicato per semplificare le operazioni comuni.
-
-### Avvio in due comandi:
-
-1.  **Avvia i servizi (DB, Redis, API, Worker):**
-    ```bash
-    make up
-    ```
-2.  **Applica le migrazioni del database:**
-    ```bash
-    make migrate
-    ```
-
-### Comandi Utili:
-
-| Comando | Descrizione |
-|---------|-------------|
-| `make up` | Avvia tutti i container in background. |
-| `make migrate` | Applica lo schema PostgreSQL aggiornato. |
-| `make test-dry-run` | Sottomette un job di test E2E (dry_run) con peptidi TESLA-P001. |
-| `make logs` | Visualizza i log in tempo reale di tutti i servizi. |
-| `make restart` | Riavvia tutti i servizi. |
-| `make down` | Ferma e rimuove tutti i container. |
-
-<hr />
-
-### Option 2: CLI (Local)
-
-```bash
 # Create a virtual environment
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
 # Start backend services
-docker-compose up -d
+docker-compose up -d redis postgres
 
-# Run a dry-run
+# Run a dry-run with peptides
 python scripts/run_pipeline_cli.py \
   --patient-id P001 \
   --hla-alleles "HLA-A*02:01" \
@@ -250,7 +197,7 @@ python scripts/run_pipeline_cli.py \
 ```
 
 ### Option 3: HPC / Nextflow
-
+Ideal for Linux clusters (e.g., SLURM) where Conda or Bioconda environments are preferred.
 ```bash
 nextflow run workflows/neoantigen.nf \
   --input_vcf sample.vcf \
@@ -320,13 +267,7 @@ Results are saved to `benchmark/results/`.
 
 ---
 
-## Quick Start
 
-Three supported modes to run the pipeline:
-
-- CLI local: `python -m neoantigen_studio` or use `scripts/run_pipeline_cli.py` for job submissions and dry-runs.
-- Docker Compose: `docker-compose up` to start the full local stack (API, worker, Redis, MinIO).
-- HPC / Nextflow: `nextflow run workflows/neoantigen.nf --input_vcf sample.vcf` (see profiles below).
 
 ## Prediction Backends
 
