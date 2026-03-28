@@ -86,7 +86,7 @@ node_modules/
 test.db
 
 # NeoAntigen-Studio Runtime Data
-data/
+/data/
 runs/
 simulation_results/
 job_manifest.json
