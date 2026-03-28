@@ -1,0 +1,11 @@
+﻿feat(pipeline): integrate expression_parser and clonality_estimator
+
+- Add expression_parser.py: parses Salmon/Kallisto/STAR/generic RNA-seq files
+- Add clonality_estimator.py: CCF estimation via simple_ccf or PyClone-VI
+- Integrate expression_filter into score_phase2_candidates (Levels 1+2)
+- Add --expression-file CLI arg, propagate through wrapper and Nextflow
+- Add pythonpath=. to pyproject.toml for local pytest without editable install
+- Add 2 tests: expression filter with/without TPM column
+
+Closes: expression_parser integration (L1+L2 complete)
+Note: clonality_estimator L2 integration pending (Prompt 2 not yet applied)

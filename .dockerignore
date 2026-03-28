@@ -1,0 +1,14 @@
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+.env
+data/iedb_cache
+data/ensembl_cache
+data/reports
+data/results
+runs/
+*.log
+.pytest_cache
+tests/

@@ -1,0 +1,40 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# System deps minimali
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Dipendenze Python
+COPY pyproject.toml ./
+RUN pip install --no-cache-dir -e ".[api]" 2>/dev/null || \
+    pip install --no-cache-dir fastapi uvicorn[standard] pydantic httpx rich celery
+
+# Codice sorgente
+COPY agent/ ./agent/
+COPY services/ ./services/
+COPY schemas/ ./schemas/
+COPY migrations/ ./migrations/
+COPY scripts/ ./scripts/
+
+# Crea directory necessarie
+RUN mkdir -p data/reports data/results data/iedb_cache \
+             data/ensembl_cache data/models runs
+
+# Variabili d'ambiente con default sicuri
+ENV NEOANTIGEN_LEARNINGS_DB=/app/data/learnings.db
+ENV NEOANTIGEN_REPORT_FORMAT=markdown
+ENV NEOANTIGEN_APPROVAL_SECRET=change-me-in-production
+ENV CELERY_BROKER_URL=""
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+CMD ["uvicorn", "services.api.main:app", \
+     "--host", "0.0.0.0", "--port", "8000", \
+     "--log-level", "info"]

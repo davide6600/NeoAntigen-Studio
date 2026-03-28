@@ -1,0 +1,62 @@
+{
+  "AAAAAAAAAA|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.7306
+  },
+  "AVFDRKSDAK|HLA-B*08:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.9347
+  },
+  "FLRGRAYGL|HLA-B*35:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.705
+  },
+  "GGGGGGGGGG|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.5488
+  },
+  "GILGFVFTL|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.6646
+  },
+  "IIIIIIIIII|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.374
+  },
+  "KKKKKKKKKK|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.4197
+  },
+  "KLGGALQAK|HLA-A*03:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.3935
+  },
+  "LLLLLLLLLL|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.6884
+  },
+  "NLVPMVATV|HLA-A*02:01": {
+    "affinity_nm": null,
+    "percentile_rank": null,
+    "predictor": "stub_fallback",
+    "score": 0.7976
+  }
+}

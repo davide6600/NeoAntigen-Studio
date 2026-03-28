@@ -1,0 +1,15 @@
+name: neoantigen-studio
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - mhcflurry>=2.0.0
+      - fastapi
+      - celery
+      - redis-py
+  - bioconda::optitype
+  - bioconda::razers3

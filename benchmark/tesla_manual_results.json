@@ -1,0 +1,16 @@
+{
+  "date": "2026-03-27",
+  "method": "manual_curl_verification",
+  "predictor": "netmhcpan_iedb_api",
+  "verified_peptides": [
+    {
+      "peptide": "GILGFVFTL",
+      "allele": "HLA-A*02:01",
+      "ic50_nm": 21.4,
+      "immunogenic": 1,
+      "source": "Flu_M1_control",
+      "verified": true
+    }
+  ],
+  "note": "IEDB API verified functional via curl. Python client blocked by server User-Agent policy. Full automated benchmark pending Python client fix or MHCflurry install."
+}

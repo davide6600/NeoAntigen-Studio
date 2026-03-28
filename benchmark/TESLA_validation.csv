@@ -1,0 +1,3 @@
+patient_id,peptide,hla_allele,immunogenic
+TESLA_P1,GILGFVFTL,HLA-A*02:01,1
+TESLA_P1,AAAAAAAAAA,HLA-A*02:01,0

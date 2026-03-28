@@ -1,0 +1,35 @@
+{
+  "name": "NeoAntigen Project Agent",
+  "version": "0.1.0",
+  "repository": "NeoAntigen-Studio",
+  "roles": [
+    "project_bootstrap",
+    "safe_orchestration",
+    "mlops_assistant",
+    "context_summarizer"
+  ],
+  "capabilities": [
+    "skill_auto_selection",
+    "context_indexing",
+    "learning_record_persistence",
+    "retrain_recommendation",
+    "proposal_gated_actions",
+    "audit_logging"
+  ],
+  "safety": {
+    "research_use_only": true,
+    "require_human_approval_for_sequence_export": true,
+    "forbid_autonomous_wet_lab_actions": true,
+    "forbid_external_network_calls_by_default": true
+  },
+  "startup": {
+    "index_sources": [
+      "ARCHITECTURE.md",
+      "README.md",
+      "docs/*.md",
+      "git:last_20_commits"
+    ],
+    "load_model_metadata": true,
+    "summarize_pending_approvals": true
+  }
+}

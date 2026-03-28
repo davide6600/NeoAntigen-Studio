@@ -1,0 +1,49 @@
+# Default values for neoantigen-studio.
+
+global:
+  environment: production
+  domain: neoantigen-studio.local
+
+# API Service
+api:
+  replicaCount: 2
+  image:
+    repository: neoantigen-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+    
+# Worker Service
+worker:
+  replicaCount: 3
+  image:
+    repository: neoantigen-worker
+    tag: latest
+    pullPolicy: IfNotPresent
+
+# Frontend Service
+frontend:
+  replicaCount: 2
+  image:
+    repository: neoantigen-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+
+# External Dependencies (Postgres, Redis, MinIO)
+# In production, these should ideally be managed outside the cluster or using specialized operators.
+postgres:
+  enabled: true
+  host: postgres-service
+  
+redis:
+  enabled: true
+  host: redis-service
+
+minio:
+  enabled: true
+  host: minio-service

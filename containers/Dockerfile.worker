@@ -1,0 +1,35 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl wget \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY pyproject.toml ./
+# Ensure pandas is available in worker images (used by expression parser)
+RUN pip install --no-cache-dir fastapi pydantic celery redis scikit-learn numpy pandas>=2.0
+
+COPY agent/ ./agent/
+COPY services/ ./services/
+COPY pipelines/ ./pipelines/
+
+RUN mkdir -p data/reports data/results data/iedb_cache \
+             data/ensembl_cache data/models runs
+
+ENV NEOANTIGEN_LEARNINGS_DB=/app/data/learnings.db
+ENV CELERY_BROKER_URL=redis://redis:6379/0
+ENV CELERY_RESULT_BACKEND=redis://redis:6379/0
+ENV PYTHONUNBUFFERED=1
+
+# Build arg: set to "true" to include NetMHCpan setup instructions
+ARG INCLUDE_NETMHCPAN=false
+
+# NetMHCpan deve essere installato manualmente dopo il build
+# Vedi scripts/install_netmhcpan.sh
+# Se disponibile, montalo come volume:
+# docker run -v /opt/netMHCpan:/opt/netMHCpan ...
+# e setta: NETMHCPAN_PATH=/opt/netMHCpan/netMHCpan
+
+CMD ["celery", "-A", "services.worker.celery_app", "worker", \
+     "--loglevel=info", "--concurrency=2"]

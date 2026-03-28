@@ -1,0 +1,7 @@
+{
+  "job_id": "your-job-id-here",
+  "_comment": "hla_alleles: list of patient HLA alleles for MHC-I prediction",
+  "hla_alleles": ["HLA-A*02:01", "HLA-B*07:02", "HLA-C*07:01"],
+  "tumor_type": "melanoma",
+  "input_paths": []
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LimsManifest",
+  "description": "LIMS Manifest for tracking assay runs and samples.",
+  "type": "object",
+  "properties": {
+    "manifest_id": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "assay_type": { "type": "string", "enum": ["MS", "TSCAN", "MULTIMER", "ELISPOT", "KILLING", "SCTCR"] },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sample_id": { "type": "string" },
+          "peptide_id": { "type": "string" },
+          "well_position": { "type": "string" }
+        },
+        "required": ["sample_id", "peptide_id"]
+      }
+    }
+  },
+  "required": ["manifest_id", "created_at", "assay_type", "items"]
+}

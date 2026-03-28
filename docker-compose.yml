@@ -1,0 +1,91 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: containers/Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - neoantigen_data:/app/data
+      - neoantigen_runs:/app/runs
+    environment:
+      - NEOANTIGEN_DATABASE_URL=postgresql://neoantigen:dev@postgres:5432/neoantigen
+      - NEOANTIGEN_LEARNINGS_DB=/app/data/learnings.db
+      - NEOANTIGEN_APPROVAL_SECRET=${NEOANTIGEN_APPROVAL_SECRET:-dev-secret-change-me}
+      - NEOANTIGEN_REPORT_FORMAT=${NEOANTIGEN_REPORT_FORMAT:-markdown}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  worker:
+    build:
+      context: .
+      dockerfile: containers/Dockerfile.worker
+    volumes:
+      - neoantigen_data:/app/data
+      - neoantigen_runs:/app/runs
+      # Decommentare per montare NetMHCpan dall'host:
+      # - /opt/netMHCpan:/opt/netMHCpan:ro
+    environment:
+      - NEOANTIGEN_DATABASE_URL=postgresql://neoantigen:dev@postgres:5432/neoantigen
+      - NEOANTIGEN_LEARNINGS_DB=/app/data/learnings.db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - NEOANTIGEN_APPROVAL_SECRET=${NEOANTIGEN_APPROVAL_SECRET:-dev-secret-change-me}
+      # Decommentare se NetMHCpan è installato sull'host:
+      # - NETMHCPAN_PATH=/opt/netMHCpan/netMHCpan
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=neoantigen
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DB=neoantigen
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "neoantigen"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  neoantigen_data:
+  neoantigen_runs:
+  redis_data:
+  postgres_data:

@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExperimentLabel",
+  "description": "Experimental label produced by a wet-lab assay for a peptide candidate. Research Use Only.",
+  "type": "object",
+  "properties": {
+    "label_id": {
+      "type": "string",
+      "description": "Unique identifier for this label record"
+    },
+    "peptide_id": {
+      "type": "string",
+      "description": "Reference to the PeptideCandidate this label belongs to"
+    },
+    "assay_type": {
+      "type": "string",
+      "enum": ["MS", "TSCAN", "MULTIMER", "ELISPOT", "KILLING", "SCTCR"],
+      "description": "Assay technology used to produce the label"
+    },
+    "assay_id": {
+      "type": "string",
+      "description": "Identifier of the assay run or experiment batch"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["positive", "negative", "ambiguous"],
+      "description": "Experimental outcome for this peptide/assay"
+    },
+    "score": {
+      "type": ["number", "null"],
+      "description": "Optional quantitative score (e.g. fold-change, intensity)"
+    },
+    "qc_metrics": {
+      "type": ["object", "null"],
+      "description": "Assay-specific QC metrics",
+      "properties": {
+        "psm_count": {
+          "type": "number",
+          "description": "Number of peptide-spectrum matches (MS assays)"
+        },
+        "fdr": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "False discovery rate (MS assays)"
+        },
+        "replicate_concordance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of replicates in agreement (pooled screens)"
+        }
+      },
+      "additionalProperties": true
+    },
+    "uploaded_by": {
+      "type": "string",
+      "description": "User ID of the uploader"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the upload"
+    },
+    "uncertainty": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.0,
+      "description": "Predictive uncertainty estimate for the associated peptide prediction (0=certain, 1=maximally uncertain)"
+    }
+  },
+  "required": [
+    "label_id",
+    "peptide_id",
+    "assay_type",
+    "assay_id",
+    "result",
+    "uploaded_by",
+    "timestamp"
+  ],
+  "additionalProperties": false
+}

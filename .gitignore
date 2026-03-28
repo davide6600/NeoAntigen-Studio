@@ -1,0 +1,124 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+.env/
+neoantigen_env/
+neoantigen_env_wsl/
+*_env/
+*_venv/
+.tmp_pip/
+
+# Pytest / Testing
+.pytest_cache/
+.pytest_cache_neoantigen/
+.pytest_tmp/
+pytest_tmp/
+pytest_tmp_runs/
+pytest-cache-files-*/
+.tox/
+.nox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+test_results*.txt
+tests/tmp_paths/
+tests/pytest_tmp_runs/
+
+# Caches
+.mypy_cache/
+.ruff_cache/
+.pyre/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+test.db
+
+# NeoAntigen-Studio Runtime Data
+data/
+runs/
+simulation_results/
+job_manifest.json
+!data/.gitkeep
+
+# Bioinformatics
+*.fastq
+*.fastq.gz
+*.bam
+*.bai
+*.cram
+*.vcf
+*.vcf.gz
+*.pdf
+benchmark/cache.json
+benchmark/results/
+
+# Internal Operational
+starting_prompt.md
+social_media_posts.md
+QA_tests/
+marketing/
+MARKETING.md
+ARCHITECTURE_IMPLEMENTATION_PLAN.md
+
+# Logs
+*.log
+Git.log
+log_debug*.md
+conversazione_*.md
+RUN_REPORT_WSL2_ATTEMPT.md
+RUN_REPORT_FINALE_ONESTO.md
+BLOCKERS_REAL_RUN_ATTEMPT2.md
+PHASE1_COMPLETION_REPORT.md
+ARCHITECTURE_IMPLEMENTATION_PLAN.md

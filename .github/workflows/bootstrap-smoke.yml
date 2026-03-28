@@ -1,0 +1,212 @@
+name: bootstrap-smoke
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+on:
+  push:
+    branches: ["agent/bootstrap", "main", "master"]
+  pull_request:
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify governance artifacts
+        run: |
+          test -f ARCHITECTURE_IMPLEMENTATION_PLAN.md
+          test -f Architecture_Traceability_Matrix.md
+          test -f agent/checklist.md
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip==25.0.1
+          python -m pip install \
+            pydantic==2.10.6 \
+            pydantic-settings==2.7.1 \
+            pytest==8.3.4 \
+            jsonschema==4.26.0 \
+            fastapi==0.109.0 \
+            httpx==0.27.2 \
+            "uvicorn[standard]==0.27.1" \
+            structlog==24.4.0 \
+            prometheus-client==0.21.0 \
+            pyyaml==6.0.1 \
+            requests==2.31.0 \
+            dnachisel==3.2.16 \
+            celery==5.3.6 \
+            viennarna>=2.6.4 \
+            joblib==1.3.2 \
+            scikit-learn==1.4.1.post1 \
+            numpy==1.26.4
+
+      - name: Install pandas
+        run: |
+          pip install "pandas>=2.0"
+
+      - name: Unit tests
+        run: pytest -q
+        env:
+          PYTHONPATH: .
+
+      - name: Nextflow smoke
+        run: |
+          if command -v nextflow >/dev/null 2>&1; then
+            nextflow run pipelines/nextflow/smoke_test/main.nf
+          else
+            echo "SKIP: nextflow not installed; local command: nextflow run pipelines/nextflow/smoke_test/main.nf"
+          fi
+
+  phase1-contract-gates:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip==25.0.1
+          python -m pip install \
+            pydantic==2.10.6 \
+            pydantic-settings==2.7.1 \
+            pytest==8.3.4 \
+            jsonschema==4.26.0 \
+            fastapi==0.109.0 \
+            httpx==0.27.2 \
+            "uvicorn[standard]==0.27.1" \
+            structlog==24.4.0 \
+            prometheus-client==0.21.0 \
+            pyyaml==6.0.1 \
+            requests==2.31.0 \
+            dnachisel==3.2.16 \
+            celery==5.3.6 \
+            viennarna>=2.6.4 \
+            joblib==1.3.2 \
+            scikit-learn==1.4.1.post1 \
+            numpy==1.26.4
+
+      - name: Phase 1 contract tests
+        run: |
+          pytest -q \
+            tests/test_deletion_api.py \
+            tests/test_jobs_api.py \
+            tests/test_object_store.py \
+            tests/test_postgres_migrations.py \
+            tests/test_retention.py \
+            tests/test_worker_queue.py \
+            tests/test_apply_postgres_migrations_script.py
+        env:
+          PYTHONPATH: .
+
+  phase2-contract-gates:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip==25.0.1
+          python -m pip install \
+            pydantic==2.10.6 \
+            pydantic-settings==2.7.1 \
+            pytest==8.3.4 \
+            jsonschema==4.26.0 \
+            fastapi==0.109.0 \
+            httpx==0.27.2 \
+            "uvicorn[standard]==0.27.1" \
+            structlog==24.4.0 \
+            prometheus-client==0.21.0 \
+            pyyaml==6.0.1 \
+            requests==2.31.0 \
+            dnachisel==3.2.16 \
+            celery==5.3.6 \
+            viennarna>=2.6.4 \
+            joblib==1.3.2 \
+            scikit-learn==1.4.1.post1 \
+            numpy==1.26.4
+
+      - name: Phase 2 contract tests
+        run: |
+          pytest -q \
+            tests/integration/test_phase2_pipeline_execution.py \
+            tests/test_phase2_pipeline_runtime.py \
+            tests/test_phase2_postgres_persistence.py \
+            tests/test_phase2_entities_api.py \
+            tests/test_phase2_entities_audit.py
+        env:
+          PYTHONPATH: .
+
+  nextflow-container:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: read
+    # Only attempt when Docker is available and the Dockerfile exists
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify governance artifacts
+        run: |
+          test -f ARCHITECTURE_IMPLEMENTATION_PLAN.md
+          test -f Architecture_Traceability_Matrix.md
+          test -f agent/checklist.md
+
+      - name: Check Dockerfile exists
+        id: check_dockerfile
+        run: |
+          if [ -f containers/Dockerfiles/nextflow-smoke.Dockerfile ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "INFO: nextflow-smoke.Dockerfile not found — skipping container build"
+          fi
+
+      - name: Build nextflow-smoke image
+        if: steps.check_dockerfile.outputs.exists == 'true'
+        run: |
+          docker build \
+            -f containers/Dockerfiles/nextflow-smoke.Dockerfile \
+            -t nextflow-smoke:ci \
+            .
+
+      - name: Run nextflow smoke inside container
+        if: steps.check_dockerfile.outputs.exists == 'true'
+        run: |
+          docker run --rm nextflow-smoke:ci \
+            nextflow run main.nf
+
+      - name: Run phase2 nextflow contract inside container
+        if: steps.check_dockerfile.outputs.exists == 'true'
+        run: |
+          docker run --rm nextflow-smoke:ci sh -lc '
+            nextflow run pipelines/nextflow/main.nf --job_id ci-phase2 --outdir /workspace/phase2-out &&
+            test -f /workspace/phase2-out/preprocessing_metrics.json &&
+            test -f /workspace/phase2-out/annotated_variants.json &&
+            test -f /workspace/phase2-out/ranked_peptides.json &&
+            test -f /workspace/phase2-out/feature_table.json
+          '

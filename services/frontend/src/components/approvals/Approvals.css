@@ -1,0 +1,128 @@
+.approvals-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.approvals-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding: var(--sp-6);
+  border-left: 4px solid var(--accent-warning);
+}
+
+.text-warning { color: var(--accent-warning); }
+.text-success { color: var(--accent-success); }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-2 { margin-bottom: var(--sp-2); }
+
+.approvals-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.approval-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-6);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.approval-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.approval-card.pending {
+  border-left: 3px solid var(--accent-warning);
+}
+
+.approval-card.approved {
+  border-left: 3px solid var(--accent-success);
+  opacity: 0.8;
+}
+
+.req-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.req-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.req-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2) var(--sp-6);
+  font-size: 0.875rem;
+}
+
+.req-details p {
+  color: var(--text-secondary);
+}
+
+.req-details strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.approval-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 160px;
+}
+
+.approval-actions.centered {
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-approve {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--accent-success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: var(--sp-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-approve:hover {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+.btn-reject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+  padding: var(--sp-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reject:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-danger);
+  border-color: rgba(239, 68, 68, 0.3);
+}

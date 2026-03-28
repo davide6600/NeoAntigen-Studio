@@ -1,0 +1,135 @@
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.results-header {
+  padding: var(--sp-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-light);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-lg);
+  width: 300px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+}
+
+.metric-card {
+  padding: var(--sp-6);
+  text-align: center;
+}
+
+.metric-card h3 {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: var(--sp-2);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.metric-card.highlight {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(59, 130, 246, 0.1));
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-card.highlight .metric-value {
+  color: var(--accent-primary);
+}
+
+.mt-6 { margin-top: var(--sp-6); }
+.p-0 { padding: 0; }
+.p-4 { padding: var(--sp-4); }
+.border-b { border-bottom: 1px solid var(--border-light); }
+.overflow-hidden { overflow: hidden; }
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.peptide-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.peptide-table th {
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.peptide-table td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.875rem;
+}
+
+.peptide-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.text-primary { color: var(--accent-primary); font-weight: 500; }
+
+.badge.high_priority { background: rgba(239, 68, 68, 0.1); color: var(--accent-danger); }
+.badge.binder { background: rgba(16, 185, 129, 0.1); color: var(--accent-success); }
+.badge.weak_binder { background: rgba(245, 158, 11, 0.1); color: var(--accent-warning); }
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.btn-icon:hover {
+  color: var(--accent-success);
+}
